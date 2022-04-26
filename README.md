@@ -7,3 +7,4 @@ Nimet Apaydın
 Burak Yıldız
 Lukas Şarklı
 Gizem Ulusoy
+Unity versiyon : 2020.3.25f1
