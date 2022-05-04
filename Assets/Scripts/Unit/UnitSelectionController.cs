@@ -27,6 +27,7 @@ public class UnitSelectionController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if (Input.GetMouseButtonDown(0))
         {
             StartSelectionArea();
@@ -46,11 +47,15 @@ public class UnitSelectionController : MonoBehaviour
     }
     void StartSelectionArea()
     {
-        foreach (UnitMover item in selectedUnits)
+        if (!Input.GetKey(KeyCode.LeftShift))
+        {
+            foreach (UnitMover item in selectedUnits)
             {
                 item.Deselect();
             }
         selectedUnits.Clear();
+        }
+        
         selectionArea.gameObject.SetActive(true);
         mouseStartPos = Input.mousePosition;
         UpdateSelectionArea();
@@ -76,7 +81,7 @@ public class UnitSelectionController : MonoBehaviour
             if(!Physics.Raycast(ray,out RaycastHit hit,Mathf.Infinity,layerMask)) return;
     
             if(!hit.collider.TryGetComponent<UnitMover>(out UnitMover unit)) return;
-    
+            
             selectedUnits.Add(unit);
             foreach (UnitMover item in selectedUnits)
             {
@@ -89,6 +94,8 @@ public class UnitSelectionController : MonoBehaviour
 
         foreach (UnitMover item in myAllUnits)
         {
+            if(selectedUnits.Contains(item)) continue;
+
             Vector3 screenPos = mainCamera.WorldToScreenPoint(item.transform.position);
             if (screenPos.x > min.x && screenPos.x < max.x && screenPos.y < max.y && screenPos.y >min.y)
             {
@@ -106,6 +113,7 @@ public class UnitSelectionController : MonoBehaviour
 
         foreach (UnitMover item in selectedUnits)
         {
+            item.target = hit.transform; // target daha sonra dusman ya da bina gibi objeler olacak
             item.MoveToPoint(hit.point);
         }
     }
