@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class UnitSelectionController : MonoBehaviour
 {
     public static UnitSelectionController Singleton;
-
+   
     public List<UnitMover> selectedUnits = new List<UnitMover>();
     public List<UnitMover> myAllUnits = new List<UnitMover>();
 
@@ -14,6 +15,7 @@ public class UnitSelectionController : MonoBehaviour
     Camera mainCamera;
     [SerializeField] LayerMask layerMask;
     [SerializeField] LayerMask targetLayerMask;
+    public bool isPointerOverUI;
     void Awake()
     {
         Singleton = this;
@@ -27,6 +29,9 @@ public class UnitSelectionController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        isPointerOverUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+        
+        
         
         if (Input.GetMouseButtonDown(0))
         {
@@ -40,6 +45,7 @@ public class UnitSelectionController : MonoBehaviour
         {
             UpdateSelectionArea();
         }
+        if(isPointerOverUI) return;
         else if (Input.GetMouseButtonDown(1))
         {
             GiveCommandToUnits();

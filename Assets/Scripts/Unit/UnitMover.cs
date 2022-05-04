@@ -8,6 +8,9 @@ public class UnitMover : MonoBehaviour
     NavMeshAgent agent;
     Animator _animator;
     [SerializeField] GameObject sprite;
+    [SerializeField] Transform trForRotation;
+    [SerializeField] Transform raybas;
+    [SerializeField] LayerMask groundLayer;
     public Transform target; // daha sonra hedefle ilgili yapılacaklar icin dusman ya da bina gibi objeler
 
     void Start()
@@ -33,12 +36,19 @@ public class UnitMover : MonoBehaviour
     /// </summary>
     void Update()
     {
+        
+        Physics.Raycast(raybas.position,
+            Vector3.down,out RaycastHit hit,15f,groundLayer);
+      
+     trForRotation.LookAt(hit.point);
+        
         UpdateAnimator();
+         
         if(!agent.hasPath) return;
         if(agent.remainingDistance > agent.stoppingDistance) return;
 
         agent.ResetPath();
-
+       
         
     }
     void UpdateAnimator()
@@ -48,4 +58,5 @@ public class UnitMover : MonoBehaviour
         float s = localV.z;
         _animator.SetFloat("speed",s);
     }
+   
 }

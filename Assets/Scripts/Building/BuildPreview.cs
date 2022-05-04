@@ -8,7 +8,7 @@ public class BuildPreview : MonoBehaviour
     [SerializeField] GameObject building;
     public static bool canBuild = false;
     
-    
+    bool builded = false;
     void OnEnable()
     {
         canBuild = true;
@@ -17,7 +17,7 @@ public class BuildPreview : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         bool isHitted = Physics.Raycast(ray,out RaycastHit hit,Mathf.Infinity, layerMask);
-        if(!isHitted)
+        if(!isHitted || UnitSelectionController.Singleton.isPointerOverUI)
         {
             
          return;
@@ -28,18 +28,27 @@ public class BuildPreview : MonoBehaviour
         {
             if (canBuild)
             {
-                Instantiate(building,transform.position,transform.rotation);
-                Destroy(gameObject);
-                canBuild = false;
+                builded = true;
+                Invoke(nameof(Build),3f);
             }
             
         }
-        transform.position = hit.point;
+        if (!builded)
+        {
+            transform.position = hit.point;
         Quaternion rot = Quaternion.LookRotation(hit.normal) *  Quaternion.Euler(90,0,0);
         transform.rotation = rot;
+        }
+        
         
     }
-    
+    void Build()
+    {
+        Instantiate(building,transform.position,transform.rotation);
+        Destroy(gameObject);
+        canBuild = false;
+        
+    }
     void OnTriggerStay(Collider other)
     {
         if (!Contains(other.gameObject.layer,layerMask))
