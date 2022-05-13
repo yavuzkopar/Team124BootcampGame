@@ -13,6 +13,18 @@ public class UnitMover : MonoBehaviour
     [SerializeField] LayerMask groundLayer;
     public Transform target; // daha sonra hedefle ilgili yapılacaklar icin dusman ya da bina gibi objeler
 
+    //hedeflenen nesne
+    public UnitMover currentTarget;
+
+    //bu nesnenin tarafı enemy yada düşman
+    public Side side;
+
+    //Nesnenin durumu
+    public State currentState;
+
+    //can
+    public int health = 100;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -34,8 +46,61 @@ public class UnitMover : MonoBehaviour
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
+
+    //hasar alma durumu
+    public void Hit(int damage){
+        health -= damage;
+    }
+
+    //atağı yakala
+    public void HandleAttack(UnitMover enemy){
+        StartCoroutine(AttackRoutine());
+
+        IEnumerator AttackRoutine() {
+            //Her yarım saniyede kendi sağlığım olduğu ve düşmanın ölmediği sürece ona saldır
+            while (enemy.health > 0 && health > 0) {
+                yield return new WaitForSeconds(.5f);
+                enemy.Hit(5);
+            }
+        }
+    }
     void Update()
     {
+        // Saldırı yapıyorsam kontrol yapma
+        if (currentState != State.attacking) {
+            //Bir hedefe kitlenmişsem ve bana yakınsa saldır
+            if (currentTarget && Vector3.Distance(currentTarget.transform.position, transform.position) < 4f) {
+                // savaş
+                Debug.Log("savaş başladı");
+                currentState = State.attacking;
+                agent.ResetPath();
+                HandleAttack(currentTarget);
+            }
+            //Bir hedefe kitlenmemişsem
+            else {
+                //Etrafımda olan birimleri göster
+                Collider[] hitColliders = Physics.OverlapSphere(raybas.position, 10);
+
+                var isEnemyFound = false;
+                //Her birimi kontrol et
+                foreach (var hitCollider in hitColliders)
+                {
+                    UnitMover unit = hitCollider.GetComponent<UnitMover>();
+                    //Etrafımdaki birim unit moversa ve benim tarafımda değilse direk düşmanımsa ona kilitlen
+                    if (unit && unit.side != side) {
+                        isEnemyFound = true;
+                        currentTarget = unit;
+                        currentState = State.lock2target;
+                        MoveToPoint(currentTarget.transform.position);
+                    }
+                }
+                //etrafında düşman yoksa beklemeye devam et
+                if (!isEnemyFound) {
+                    // idle
+                    currentState = State.idle;
+                }
+            }
+        }        
         
         Physics.Raycast(raybas.position,
             Vector3.down,out RaycastHit hit,15f,groundLayer);
@@ -48,6 +113,8 @@ public class UnitMover : MonoBehaviour
         if(agent.remainingDistance > agent.stoppingDistance) return;
 
         agent.ResetPath();
+
+
        
         
     }
