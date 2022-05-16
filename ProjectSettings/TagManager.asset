@@ -5,6 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - PreviewBuilding
+  - Kunduz
+  - Tilki
+  - Agac
+  - Enemy
+  - Ggg
+  - Av
   layers:
   - Default
   - TransparentFX
@@ -15,7 +21,7 @@ TagManager:
   - My Units
   - GroundLayer
   - Building
-  - 
+  - Agac
   - 
   - 
   - 

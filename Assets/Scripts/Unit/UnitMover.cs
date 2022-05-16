@@ -5,13 +5,14 @@ using UnityEngine.AI;
 
 public class UnitMover : MonoBehaviour
 {
-    NavMeshAgent agent;
+    public NavMeshAgent agent;
     Animator _animator;
     [SerializeField] GameObject sprite;
     [SerializeField] Transform trForRotation;
     [SerializeField] Transform raybas;
     [SerializeField] LayerMask groundLayer;
-    public Transform target; // daha sonra hedefle ilgili yapılacaklar icin dusman ya da bina gibi objeler
+    [SerializeField] float _damage;
+    public Transform target = null; // daha sonra hedefle ilgili yapılacaklar icin dusman ya da bina gibi objeler
 
     //hedeflenen nesne
     public UnitMover currentTarget;
@@ -27,6 +28,7 @@ public class UnitMover : MonoBehaviour
 
     void Start()
     {
+        target = GameObject.FindGameObjectWithTag("Ggg").transform;
         agent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
     }
@@ -43,7 +45,6 @@ public class UnitMover : MonoBehaviour
     {
         sprite.SetActive(false);
     }
-    /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
 
@@ -67,7 +68,6 @@ public class UnitMover : MonoBehaviour
     void Update()
     {
         // Saldırı yapıyorsam kontrol yapma
-        if (currentState != State.attacking) {
             //Bir hedefe kitlenmişsem ve bana yakınsa saldır
             if (currentTarget && Vector3.Distance(currentTarget.transform.position, transform.position) < 4f) {
                 // savaş
@@ -100,30 +100,55 @@ public class UnitMover : MonoBehaviour
                     currentState = State.idle;
                 }
             }
-        }        
+               
         
         Physics.Raycast(raybas.position,
             Vector3.down,out RaycastHit hit,15f,groundLayer);
       
      trForRotation.LookAt(hit.point);
         
+   
+        
         UpdateAnimator();
          
         if(!agent.hasPath) return;
         if(agent.remainingDistance > agent.stoppingDistance) return;
-
+        
+        if ((target.CompareTag("Enemy") || target.CompareTag("Av") )&& Vector3.Distance(transform.position,target.position)<= 3f)
+        {
+            transform.LookAt(target.position);
+         //   agent.isStopped = true;
+            _animator.SetBool("attack",true);
+            Debug.Log("Saldırı animasyonu");
+            
+        }
+        
+        else if(target.CompareTag("Ggg"))
+        {
+            _animator.SetBool("attack",false);
+            
+        }
         agent.ResetPath();
 
 
        
         
     }
+    
+
     void UpdateAnimator()
     {
         Vector3 v =agent.velocity;
         Vector3 localV = transform.InverseTransformDirection(v);
         float s = localV.z;
         _animator.SetFloat("speed",s);
+    }
+
+//animation event
+    void Hittt()
+    {
+        if(target.GetComponent<Health>() != null)
+            target.GetComponent<Health>().currentHealth -= _damage;
     }
    
 }

@@ -120,7 +120,19 @@ public class UnitSelectionController : MonoBehaviour
         foreach (UnitMover item in selectedUnits)
         {
             item.target = hit.transform; // target daha sonra dusman ya da bina gibi objeler olacak
-            item.MoveToPoint(hit.point);
+            
+            if (item.gameObject.CompareTag("Kunduz") && hit.transform.CompareTag("Agac"))
+            {
+                Debug.Log( item.gameObject.name + " Agaç kesmeye gidiyor");
+            }
+            else if (item.gameObject.CompareTag("Tilki") && hit.transform.CompareTag("Enemy"))
+            {
+                 Debug.Log( item.gameObject.name + " saldırı yapmaya gidiyor");
+            }
+            
+            
+               item.MoveToPoint(hit.point);
+            
         }
     }
 }

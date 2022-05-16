@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 1136589501123803663}
   - component: {fileID: 3614603804697428912}
   m_Layer: 8
-  m_Name: Building1
+  m_Name: Yuva
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
