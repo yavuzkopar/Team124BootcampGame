@@ -84,7 +84,7 @@ public class UnitSelectionController : MonoBehaviour
         if (selectionArea.sizeDelta.magnitude == 0)
         {
                  Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            if(!Physics.Raycast(ray,out RaycastHit hit,Mathf.Infinity,layerMask)) return;
+            if(!Physics.Raycast(ray,out RaycastHit hit,Mathf.Infinity,layerMask,QueryTriggerInteraction.Ignore)) return;
     
             if(!hit.collider.TryGetComponent<UnitMover>(out UnitMover unit)) return;
             
@@ -114,7 +114,7 @@ public class UnitSelectionController : MonoBehaviour
     void GiveCommandToUnits()
     {
          Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-        if(!Physics.Raycast(ray,out RaycastHit hit,Mathf.Infinity,targetLayerMask)) return;
+        if(!Physics.Raycast(ray,out RaycastHit hit,Mathf.Infinity,targetLayerMask,QueryTriggerInteraction.Ignore)) return;
         if(selectedUnits.Count == 0) return;
 
         foreach (UnitMover item in selectedUnits)

@@ -7,11 +7,17 @@ public class BuildPreview : MonoBehaviour
     [SerializeField] LayerMask layerMask;
     [SerializeField] GameObject building;
     public static bool canBuild = false;
+
+    MeshRenderer renderer;
     
     bool builded = false;
+    [SerializeField] GameObject vfx;
+    GameObject obj;
     void OnEnable()
     {
         canBuild = true;
+        obj = GameObject.FindGameObjectWithTag("Ggg");
+        renderer = GetComponentInChildren<MeshRenderer>();
     }
     void Update()
     {
@@ -22,14 +28,31 @@ public class BuildPreview : MonoBehaviour
             
          return;
         }
+    //    if (obj.CompareTag("Ggg"))
+    //    {
+    //        canBuild = true;
+    //        renderer.material.color = Color.green;
+    //    }
+    //    else
+    //    {
+    //        canBuild = false;
+    //        renderer.material.color = Color.red;
+    //        
+    //    }
         
         
         if (Input.GetMouseButtonDown(0))
         {
-            if (canBuild)
+            if (canBuild && Economy.singleton.wood >= 100)
             {
                 builded = true;
+                vfx.SetActive(true);
+                Economy.singleton.wood -= 100;
                 Invoke(nameof(Build),3f);
+            }
+            else
+            {
+                Destroy(gameObject);
             }
             
         }
@@ -45,25 +68,56 @@ public class BuildPreview : MonoBehaviour
     void Build()
     {
         Instantiate(building,transform.position,transform.rotation);
+        Economy.singleton.populationLimit += 5;
+        Economy.singleton.UpdatePopulation();
         Destroy(gameObject);
         canBuild = false;
         
     }
-    void OnTriggerStay(Collider other)
-    {
-        if (!Contains(other.gameObject.layer,layerMask))
+    
+
+  
+    private void OnTriggerEnter(Collider other) {
+         if (!other.gameObject.CompareTag("Ggg"))
         {
+            renderer.material.color = Color.red;
             canBuild= false;
             Debug.Log("olmadı");
         }
-       // Debug.Log("oldu");
-    }
-    void OnTriggerExit(Collider other)
-    {
-        if (!Contains(other.gameObject.layer,layerMask))
+         else
         {
             canBuild = true;
+            renderer.material.color = Color.green;
+        }
+
+    }
+   void OnTriggerStay(Collider other)
+   {
+       if (!other.gameObject.CompareTag("Ggg"))
+       {
+           renderer.material.color = Color.red;
+           canBuild= false;
+           Debug.Log("olmadı");
+       }
+       else
+       {
+            renderer.material.color = Color.green;
+           canBuild= true;
+       }
+    // Debug.Log("oldu");
+   }
+    void OnTriggerExit(Collider other)
+    {
+        if (!other.gameObject.CompareTag("Ggg"))
+        {
+            canBuild = true;
+            renderer.material.color = Color.green;
             Debug.Log("oldu");
+        }
+        else
+        {
+            canBuild = false;
+            renderer.material.color = Color.red;
         }
     }
     public bool Contains(LayerMask mask, int layer)
