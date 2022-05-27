@@ -83,6 +83,31 @@ Takım 124
 
 # Sprint 2
 
+- **Sprint içinde tamamlanması tahmin edilen puan**: 110 Puan
+
+
+- **Daily Scrum**: Daily Scrum toplantılarını Whatsapp, toplantıları ise Discord üzerinden gerçekleştirmeyi uygun bulduk. 
+![Ekran görüntüsü 2022-05-24 103642](https://user-images.githubusercontent.com/83844231/169975528-54006ae8-e9bb-4b38-a381-64f69cfa6e9b.png)
+![Ekran görüntüsü 2022-05-24 103706](https://user-images.githubusercontent.com/83844231/169975544-31c52106-f192-4f25-9ca5-d061371ccf94.png)
+![Ekran görüntüsü 2022-05-24 103607](https://user-images.githubusercontent.com/83844231/169975552-e8636bd1-7cdd-4b81-8df4-5dab25887892.png)
+
+
+- **Sprint board update**: Sprint board screenshotları: 
+![Bootcamp (1)](https://user-images.githubusercontent.com/83844231/169974929-0c1ed435-e12f-4a9d-83ef-066e50dabde7.jpg)
+![Bootcamp (2)](https://user-images.githubusercontent.com/83844231/169974948-a1f76c79-23a8-44d8-a3ce-6e128d18af00.jpg)
+
+
+- **Ürün Durumu**: Ekran görüntüleri:
+
+
+- **Sprint Review**: 
+  - Alınan kararlar: başka adaya gitme mekaniği yetişmeyeceği için düşmanlar bizim adamıza saldırıyor
+  - biir minimapimiz var
+  - ünite kontrol geliştirildi
+
+- **Sprint Retrospective:**
+  - ana menü ve basit bir steam entegresi yapılacak
+  - saving systemin düzgün çalışabilmesi için üretim kısmında değişikliğe gitmemiz gerek
 
 ---
 
