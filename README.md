@@ -113,4 +113,29 @@ Takım 124
 
 # Sprint 3
 
+- **Sprint içinde tamamlanması tahmin edilen puan**: 200 Puan
+
+- **Daily Scrum**: Daily Scrum toplantılarını Whatsapp, toplantıları ise Discord üzerinden gerçekleştirmeyi uygun bulduk. 
+![Ekran görüntüsü 2022-06-06 225536](https://user-images.githubusercontent.com/83844231/172238219-f075a9b1-3510-4879-8658-b62e5def922d.png)
+![Ekran görüntüsü 2022-06-06 225431](https://user-images.githubusercontent.com/83844231/172238190-4f22efd8-3355-4b39-aeda-a587fe0f4c4b.png)
+- **Sprint board update**: Sprint board screenshotları: 
+![Bootcamp (3)](https://user-images.githubusercontent.com/83844231/172236854-e27983fe-e3c2-4f95-ab09-4cc463e13a2f.jpg)
+![Bootcamp (4)](https://user-images.githubusercontent.com/83844231/172236877-ba22af06-89ec-44a2-805d-a7e6094e7992.jpg)
+
+
+- **Ürün Durumu**: Ekran görüntüleri:
+![Ekran görüntüsü 2022-05-31 190841](https://user-images.githubusercontent.com/83844231/172236581-ffb209c5-7671-4a2d-ad5c-b75601cd4744.png)
+![Ekran görüntüsü 2022-05-31 190625](https://user-images.githubusercontent.com/83844231/172236595-67bfb54f-d4c9-4231-a116-85e3698a9c73.png)
+![Ekran görüntüsü 2022-05-31 190800](https://user-images.githubusercontent.com/83844231/172236611-3f969514-e724-40d1-a314-32e2563c6928.png)
+
+
+- **Sprint Review**: 
+  - Alınan kararlar: başka adaya gitme mekaniği yetişmeyeceği için düşmanlar bizim adamıza saldırıyor
+  - biir minimapimiz var
+  - ünite kontrol geliştirildi
+
+- **Sprint Retrospective:**
+  - ana menü ve basit bir steam entegresi yapılacak
+  - saving systemin düzgün çalışabilmesi için üretim kısmında değişikliğe gitmemiz gerek
+
 ---
