@@ -163,7 +163,10 @@ public class UnitMover : MonoBehaviour, ISaveable
             target = enemiesInRange[0];
             enemy = target.GetComponent<Health>();
             if (enemy.IsDead())
+            {
+                enemy.Gerisay();
                 enemiesInRange.Remove(target);
+            }
 
         }
         else
@@ -175,8 +178,15 @@ public class UnitMover : MonoBehaviour, ISaveable
 
         if ((target.CompareTag("Enemy") || target.CompareTag("Av")))
         {
-            target = enemiesInRange[0];
-            enemy = target.GetComponent<Health>();
+            if (target.CompareTag("Enemy"))
+            {
+                target = enemiesInRange[0];
+                enemy = target.GetComponent<Health>();
+            }
+            else if(target.CompareTag("Av"))
+            {
+                enemy = target.GetComponent<Health>();
+            }
             transform.LookAt(target.position);
             if (Vector3.Distance(transform.position, target.position) <= 10f && !enemy.IsDead())
             {

@@ -3,12 +3,12 @@
 // Please see the included LICENSE.txt for additional information.
 
 using UnityEngine;
-using UnityEditor;
+
 using System.IO;
 using System.Collections.Generic;
 
 // This copys various files into their required locations when Unity is launched to make installation a breeze.
-[InitializeOnLoad]
+/*[InitializeOnLoad]
 public class RedistInstall {
 	static RedistInstall() {
 		WriteSteamAppIdTxtFile();
@@ -67,4 +67,4 @@ public class RedistInstall {
 			PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, newDefines);
 		}
 	}
-}
+}*/

@@ -2,32 +2,32 @@
 // Copyright (c) 2013-2022 Riley Labrecque
 // Please see the included LICENSE.txt for additional information.
 
-#if !(UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX || STEAMWORKS_WIN || STEAMWORKS_LIN_OSX)
+/*#if !(UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX || STEAMWORKS_WIN || STEAMWORKS_LIN_OSX)
 #define DISABLESTEAMWORKS
-#endif
+#endif*/
 
 #if !DISABLESTEAMWORKS
 
-using UnityEngine;
-using UnityEditor;
-using UnityEditor.Callbacks;
+
+
+
 using System.IO;
-using Steamworks;
+//using Steamworks;
 
-public class RedistCopy {
-	[PostProcessBuild]
-	public static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject) {
+//public class RedistCopy {
+//	[PostProcessBuild]
+	//public static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject) {
 		// We only want to do this on Steam supported platforms.
-		if ((target != BuildTarget.StandaloneWindows) && (target != BuildTarget.StandaloneWindows64) && (target != BuildTarget.StandaloneLinux64)) {
-			return;
-		}
+	//	if ((target != BuildTarget.StandaloneWindows) && (target != BuildTarget.StandaloneWindows64) && (target != BuildTarget.StandaloneLinux64)) {
+	//		return;
+	//	}
 
-		CopyDebugInfo(target, pathToBuiltProject);
+	//	CopyDebugInfo(target, pathToBuiltProject);
 
-		DeleteOldSteamApiDlls(target, pathToBuiltProject);
-	}
+	//	DeleteOldSteamApiDlls(target, pathToBuiltProject);
+	//}
 
-	static void CopyDebugInfo(BuildTarget target, string pathToBuiltProject) {
+	/*static void CopyDebugInfo(BuildTarget target, string pathToBuiltProject) {
 		string baseDir = Path.Combine(Path.GetDirectoryName(pathToBuiltProject), Path.GetFileNameWithoutExtension(pathToBuiltProject) + "_Data");
 		string pluginsDir = Path.Combine(baseDir, "Plugins");
 
@@ -36,7 +36,7 @@ public class RedistCopy {
 
 		string[] DebugInfo = {
 			"Steamworks.NET created by Riley Labrecque",
-			"http://steamworks.github.io",
+		//	"http://steamworks.github.io",
 			"",
 			"Steamworks.NET Version: " + Steamworks.Version.SteamworksNETVersion,
 			"Steamworks SDK Version: " + Steamworks.Version.SteamworksSDKVersion,
@@ -69,8 +69,8 @@ public class RedistCopy {
 				Debug.LogWarning($"[Steamworks.NET] Attempted to delete an old copy of 'steam_api64.dll' in the following location: '{strDll64Path}', but could not due to the following exception:");
 				Debug.LogException(e);
 			}
-		}
-	}
-}
+		}*/
+	//}
+//}
 
 #endif // !DISABLESTEAMWORKS

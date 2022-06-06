@@ -51,7 +51,7 @@ namespace RPG.Saving
         }
 
         
-#endif
+
         public void SetSaving()
         {
             SerializedObject serializedObject = new SerializedObject(this);
@@ -65,6 +65,7 @@ namespace RPG.Saving
 
             globalLookup[property.stringValue] = this;
         }
+#endif
         private bool IsUnique(string candidate)
         {
             if (!globalLookup.ContainsKey(candidate)) return true;

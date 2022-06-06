@@ -7,7 +7,6 @@
     "includePlatforms": [
         "Android",
         "CloudRendering",
-        "Editor",
         "GameCoreScarlett",
         "GameCoreXboxOne",
         "iOS",
@@ -26,7 +25,7 @@
         "XboxOne"
     ],
     "excludePlatforms": [],
-    "allowUnsafeCode": false,
+    "allowUnsafeCode": true,
     "overrideReferences": true,
     "precompiledReferences": [],
     "autoReferenced": true,
