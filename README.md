@@ -130,12 +130,12 @@ Takım 124
 
 
 - **Sprint Review**: 
-  - Alınan kararlar: başka adaya gitme mekaniği yetişmeyeceği için düşmanlar bizim adamıza saldırıyor
-  - biir minimapimiz var
-  - ünite kontrol geliştirildi
+  - Alınan kararlar: steam entegresi yapıld fakat webGL formatında çalışmıyor.
+  - Animasyonlar ve iconlar eklendi
+  - bazı animasyonlarda ve düşman karakterde değişiklikler yapıldı.
+  - UI tekrar gözden geçirilip düzenlendi
+  - birim üretim ve düşman spawn mekaniklerinde save sistemle uyumlu çalışabilmesi için değişikliğe gidildi
 
-- **Sprint Retrospective:**
-  - ana menü ve basit bir steam entegresi yapılacak
-  - saving systemin düzgün çalışabilmesi için üretim kısmında değişikliğe gitmemiz gerek
+
 
 ---
