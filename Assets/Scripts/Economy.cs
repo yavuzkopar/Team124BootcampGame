@@ -1,3 +1,4 @@
+using RPG.Saving;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,11 +12,13 @@ public class Economy : MonoBehaviour
     public TMPro.TextMeshProUGUI woodMiktar;
     public TMPro.TextMeshProUGUI populationText;
 
-
+    public GameObject[] aslanlar;
+    public GameObject[] ayilar;
+    public GameObject[] kunduzlar;
 
     private void Awake() {
         singleton = this;
-
+        
         woodMiktar.text = wood.ToString();
          populationText.text =   "0 / " + populationLimit.ToString();
     }

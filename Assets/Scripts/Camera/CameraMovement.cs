@@ -27,6 +27,7 @@ public class CameraMovement : MonoBehaviour
         {
             transform.Translate(Vector3.down * Time.deltaTime * yukselmeHizi);
         }
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x, -100, 100), transform.position.y, Mathf.Clamp(transform.position.z, -100, 100));
 
         transform.Translate(new Vector3(Input.GetAxis("Horizontal"),0,Input.GetAxis("Vertical")));
         if (Input.GetKey(KeyCode.E))

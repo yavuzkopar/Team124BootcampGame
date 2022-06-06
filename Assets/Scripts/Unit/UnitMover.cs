@@ -1,9 +1,10 @@
+using RPG.Saving;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class UnitMover : MonoBehaviour
+public class UnitMover : MonoBehaviour, ISaveable
 {
     public NavMeshAgent agent;
     Animator _animator;
@@ -11,6 +12,7 @@ public class UnitMover : MonoBehaviour
     [SerializeField] Transform trForRotation;
     [SerializeField] Transform raybas;
     [SerializeField] LayerMask groundLayer;
+    [SerializeField] LayerMask enemyLayer;
     [SerializeField] int _damage;
     public Transform target = null; // daha sonra hedefle ilgili yapılacaklar icin dusman ya da bina gibi objeler
     public Health enemy;
@@ -26,10 +28,10 @@ public class UnitMover : MonoBehaviour
     public State currentState;
 
     //can
-   // public int health = 100;
-   public bool canAttack = false;
-   Health hp;
-   public List<Transform> enemiesInRange = new List<Transform>();
+    // public int health = 100;
+    public bool canAttack = false;
+    Health hp;
+    public List<Transform> enemiesInRange = new List<Transform>();
 
     void Start()
     {
@@ -51,31 +53,19 @@ public class UnitMover : MonoBehaviour
     {
         sprite.SetActive(false);
     }
-    /// Update is called every frame, if the MonoBehaviour is enabled.
-    /// </summary>
-
-    //hasar alma durumu
-  //  public void Hit(int damage){
-  //      health -= damage;
-  //  }
-
-    //atağı yakala
- //  public void HandleAttack(UnitMover enemy){
- //      StartCoroutine(AttackRoutine());
-//
- //      IEnumerator AttackRoutine() {
- //          //Her yarım saniyede kendi sağlığım olduğu ve düşmanın ölmediği sürece ona saldır
- //          while (enemy.health > 0 && health > 0) {
- //              yield return new WaitForSeconds(.5f);
- //              _animator.SetBool("attack", true);
- //           //   enemy.Hit(5);
- //          }
- //      }
- //  }
+    void OnEnable()
+    {
+        if (!UnitSelectionController.Singleton.myAllUnits.Contains(this))
+            UnitSelectionController.Singleton.myAllUnits.Add(this);
+    }
+    void OnDisable()
+    {
+        if (UnitSelectionController.Singleton.myAllUnits.Contains(this))
+            UnitSelectionController.Singleton.myAllUnits.Remove(this);
+    }
     void Update()
     {
 
-        //  Battle();
 
         Physics.Raycast(raybas.position,
             Vector3.down, out RaycastHit hit, 15f, groundLayer);
@@ -85,19 +75,18 @@ public class UnitMover : MonoBehaviour
 
 
         UpdateAnimator();
-        if(hp.IsDead()){
 
-            if(UnitSelectionController.Singleton.myAllUnits.Contains(this))
+
+        if (hp.IsDead()) {
+
+            if (UnitSelectionController.Singleton.myAllUnits.Contains(this))
             {
                 UnitSelectionController.Singleton.myAllUnits.Remove(this);
             }
             return;
-        } 
-     //   if(target == null) return;
+        }
 
-        //    if (!agent.hasPath) return;
-        //    if (agent.remainingDistance > agent.stoppingDistance) return;
-        if (gameObject.CompareTag("Unit"))
+        if (gameObject.CompareTag("Unit") || gameObject.CompareTag("Aslan"))
         {
             AttackBehaviour();
 
@@ -106,21 +95,29 @@ public class UnitMover : MonoBehaviour
         {
             LumberJacking();
         }
-        //  agent.ResetPath();
+
 
 
 
 
     }
 
-    void LumberJacking()
+    public void LumberJacking()
     {
-         if ((target.CompareTag("Agac")))
+        /*  if (target == null)
+          {
+              target = GameObject.FindGameObjectWithTag("Ggg").transform;
+              _animator.SetTrigger("idle");
+              canAttack = false;
+          }*/
+        if ((target.CompareTag("Agac")) && target != null)
         {
-        //    enemy = target.GetComponent<Health>();
+            //    enemy = target.GetComponent<Health>();
             transform.LookAt(target.position);
-            if (Vector3.Distance(transform.position, target.position) <= 4f)
+            if (Vector3.Distance(transform.position, target.position) <= 6f)
             {
+
+
                 canAttack = true;
                 //   agent.isStopped = true;
                 _animator.SetTrigger("agackes"); // agac kesme anim
@@ -130,63 +127,81 @@ public class UnitMover : MonoBehaviour
             {
                 _animator.SetTrigger("idle");
                 canAttack = false;
+                //   target = GameObject.FindGameObjectWithTag("Ggg").transform;
             }
         }
         else
         {
             _animator.SetTrigger("idle");
-                canAttack = false;
+            canAttack = false;
+            //  target = GameObject.FindGameObjectWithTag("Ggg").transform;
         }
     }
-    private void AttackBehaviour()
+    public void AttackBehaviour()
     {
-        if(target == null)
+
+        //  Collider[] enemies = Physics.OverlapSphere(transform.position, 15f,groundLayer);
+
+        if (target == null)
         {
-            if (enemiesInRange.Count>0)
-            {
-                Debug.Log("Ben Malim");
+            target = GameObject.FindGameObjectWithTag("Ggg").transform;
+            _animator.SetTrigger("idle");
+            canAttack = false;
+
+            /*    Debug.Log("Ben Malim");
                 foreach (var item in enemiesInRange)
                 {
-                    if (item == null)
+                    if (item == null || enemy.IsDead())
                     {
                         enemiesInRange.Remove(item);
                     }
-                }
-                target = GetClosestEnemy(enemiesInRange);
-            }
-            else
-                return;
+                }*/
+
         }
-        else 
+        if (enemiesInRange.Count > 0)
         {
-            
+            target = enemiesInRange[0];
+            enemy = target.GetComponent<Health>();
+            if (enemy.IsDead())
+                enemiesInRange.Remove(target);
+
+        }
+        else
+            return;
+
+    
         
+
+
         if ((target.CompareTag("Enemy") || target.CompareTag("Av")))
         {
+            target = enemiesInRange[0];
             enemy = target.GetComponent<Health>();
             transform.LookAt(target.position);
-            if (Vector3.Distance(transform.position, target.position) <= 4f && !enemy.IsDead())
+            if (Vector3.Distance(transform.position, target.position) <= 10f && !enemy.IsDead())
             {
                 canAttack = true;
                 //   agent.isStopped = true;
-                _animator.ResetTrigger("idle");
+                //   _animator.ResetTrigger("idle");
                 _animator.SetTrigger("att");
                 Debug.Log("Saldırı animasyonu");
+                return;
             }
             else if (enemy.IsDead())
             {
+                enemy.Gerisay();
                 enemiesInRange.Remove(target);
-                if (enemiesInRange.Count >0)
+                if (enemiesInRange.Count > 0)
                 {
                     target = GetClosestEnemy(enemiesInRange);
-                 //   enemy = target.GetComponent<Health>();
+                    //   enemy = target.GetComponent<Health>();
                 }
                 else
                 {
                     target = null;
                     enemy = null;
                 }
-                
+                return;
             }
             else
             {
@@ -201,9 +216,10 @@ public class UnitMover : MonoBehaviour
             _animator.SetTrigger("idle");
 
         }
-        }
+        
         
     }
+    
     Transform GetClosestEnemy(List<Transform> enemies)
     {
         Transform tMin = null;
@@ -225,86 +241,7 @@ public class UnitMover : MonoBehaviour
         return tMin;
     }
 
-  //  private void Battle()
-  //  {
-       // if(currentTarget == null || currentTarget.health <= 0) return;
-        // Saldırı yapıyorsam kontrol yapma
-        //Bir hedefe kitlenmişsem ve bana yakınsa saldır
-    //    if (currentTarget && Vector3.Distance(currentTarget.transform.position, transform.position) < 4f)
-    //    {
-    //        // savaş
-    //        if(currentTarget.health > 0 && health > 0)
-    //        {
-    //            Debug.Log("savaş başladı");
-    //        currentState = State.attacking;
-    //        agent.ResetPath();
-    //        _animator.SetBool("attack", true);
-//
-    //      //  HandleAttack(currentTarget);
-    //        }
-    //        
-    //        
-    //      //  _animator.SetBool("attack", true);
-    //    }
-    //    //Bir hedefe kitlenmemişsem
-    //    else
-    //    {
-            //Etrafımda olan birimleri göster
-            
-    /*        Collider[] hitColliders = Physics.OverlapSphere(raybas.position, 10);
-
-            var isEnemyFound = false;
-            //Her birimi kontrol et
-            foreach (var hitCollider in hitColliders)
-            {
-                UnitMover unit = hitCollider.GetComponent<UnitMover>();
-                //Etrafımdaki birim unit moversa ve benim tarafımda değilse direk düşmanımsa ona kilitlen
-                if (unit && unit.side != side)
-                {
-                    isEnemyFound = true;
-                    currentTarget = unit;
-                    currentState = State.lock2target;
-                    if(gameObject.CompareTag("Enemy")){
-                    MoveToPoint(currentTarget.transform.position);
-                    }
-                }
-            }
-                if (currentTarget && Vector3.Distance(currentTarget.transform.position, transform.position) < 4f)
-                {
-        // savaş
-                     if(!currentTarget.IsDead())
-                     {
-                         if(gameObject.CompareTag("Enemy"))
-                            {Debug.Log("savaş başladı");}
-                     currentState = State.attacking;
-                     agent.ResetPath();
-                     _animator.SetBool("attack", true);
-                     
-                    // HandleAttack(currentTarget);
-                     }
-                     else
-                     {
-                        _animator.SetBool("attack",false);
-                     //   isDead = true;
-                     }
-                }
-            //etrafında düşman yoksa beklemeye devam et
-            if (!isEnemyFound)
-            {
-                // idle
-                currentState = State.idle;
-                _animator.SetBool("attack", false);
-                
-            }*/
-    //    }
-//    }
- //   public bool IsDead()
- //   {
- //  
- //      // _animator.SetBool("attack",false);
- //       return health <= 0;
- //   }
-
+  
     void UpdateAnimator()
     {
         Vector3 v =agent.velocity;
@@ -315,9 +252,30 @@ public class UnitMover : MonoBehaviour
 
     void KesmeEvent()
     {
-        Economy.singleton.wood += 10;
-        Economy.singleton.woodMiktar.text = Economy.singleton.wood.ToString();
-        Debug.Log("kestim");
+        if (gameObject.CompareTag("Kunduz") && target != null)
+        {
+            if (target.gameObject.CompareTag("Agac"))
+            {
+                Health h = target.GetComponent<Health>();
+                if (!h.IsDead())
+                {
+                    h.currentHealth -= _damage;
+                    Economy.singleton.wood += 10;
+                    Economy.singleton.woodMiktar.text = Economy.singleton.wood.ToString();
+                    Debug.Log("kestim");
+                }
+                else
+                    h.Gerisay();
+                
+            }
+            else
+            {
+                target = GameObject.FindGameObjectWithTag("Ggg").transform;
+            }
+        }
+        else
+            return;
+        
     }
 
 //animation event
@@ -326,12 +284,13 @@ public class UnitMover : MonoBehaviour
         if(enemy != null && !enemy.IsDead() && canAttack){
             enemy.currentHealth -= _damage;
         }
+        
         else 
             return;
             
     }
     private void OnTriggerEnter(Collider other) {
-        if (other.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Av"))
         {
             if (!enemiesInRange.Contains(other.transform))
             {
@@ -343,7 +302,7 @@ public class UnitMover : MonoBehaviour
         }
     }
     private void OnTriggerExit(Collider other) {
-        if (other.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Av"))
         {
             if (enemiesInRange.Contains(other.transform))
             {
@@ -354,5 +313,16 @@ public class UnitMover : MonoBehaviour
             
         }
     }
-   
+
+    public object CaptureState()
+    {
+        return new SerializableVector3(transform.position);
+    }
+
+    public void RestoreState(object state)
+    {
+        SerializableVector3 pos = (SerializableVector3)state;
+        transform.position = pos.ToVector();
+        
+    }
 }

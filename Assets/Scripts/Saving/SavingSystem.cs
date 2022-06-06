@@ -11,6 +11,16 @@ namespace RPG.Saving
 {
     public class SavingSystem : MonoBehaviour
     {
+        public List<SaveableEntity> saveableEntities;
+        private void Awake()
+        {
+            foreach (SaveableEntity item in FindObjectsOfType<SaveableEntity>())
+            {
+                saveableEntities.Add(item);
+            }
+            if (Menu.load)
+                Load("save");
+        }
         public IEnumerator LoadLastScene(string saveFile)
         {
             Dictionary<string, object> state = LoadFile(saveFile);
@@ -77,7 +87,7 @@ namespace RPG.Saving
 
         private void CaptureState(Dictionary<string, object> state)
         {
-            foreach (SaveableEntity saveable in FindObjectsOfType<SaveableEntity>())
+            foreach (SaveableEntity saveable in saveableEntities)
             {
                 
                 state[saveable.GetUniqueIdentifier()] = saveable.CaptureState();
@@ -88,7 +98,7 @@ namespace RPG.Saving
 
         private void RestoreState(Dictionary<string, object> state)
         {
-            foreach (SaveableEntity saveable in FindObjectsOfType<SaveableEntity>())
+            foreach (SaveableEntity saveable in saveableEntities)
             {
                 string id = saveable.GetUniqueIdentifier();
                 if (state.ContainsKey(id))
@@ -97,7 +107,7 @@ namespace RPG.Saving
                 }
                 
             }
-            Abc();
+            
         }
 
         private string GetPathFromSaveFile(string saveFile)

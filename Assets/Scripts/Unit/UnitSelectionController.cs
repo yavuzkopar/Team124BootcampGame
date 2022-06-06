@@ -20,10 +20,28 @@ public class UnitSelectionController : MonoBehaviour
     {
         Singleton = this;
         mainCamera = Camera.main;
+        TumBirimleriKur();
     }
-    void Start()
+ 
+
+    public void TumBirimleriKur()
     {
-        
+        myAllUnits.Clear();
+        foreach (var item in Economy.singleton.aslanlar)
+        {
+            if (item.gameObject.activeSelf)
+                myAllUnits.Add(item.GetComponent<UnitMover>());
+        }
+        foreach (var item in Economy.singleton.ayilar)
+        {
+            if (item.gameObject.activeSelf)
+                myAllUnits.Add(item.GetComponent<UnitMover>());
+        }
+        foreach (var item in Economy.singleton.kunduzlar)
+        {
+            if (item.gameObject.activeSelf)
+                myAllUnits.Add(item.GetComponent<UnitMover>());
+        }
     }
 
     // Update is called once per frame
@@ -123,14 +141,16 @@ public class UnitSelectionController : MonoBehaviour
             
             if (item.gameObject.CompareTag("Kunduz") && hit.transform.CompareTag("Agac"))
             {
-                Debug.Log( item.gameObject.name + " Agaç kesmeye gidiyor");
+                item.LumberJacking();
             }
-            else if (item.gameObject.CompareTag("Tilki") && hit.transform.CompareTag("Enemy"))
+          
+
+            if (hit.transform.gameObject.CompareTag("Enemy"))
             {
-                 Debug.Log( item.gameObject.name + " saldırı yapmaya gidiyor");
+                item.MoveToPoint(item.target.position);
+                item.AttackBehaviour();
             }
-            
-            
+            else
                item.MoveToPoint(hit.point);
             
         }

@@ -1,0 +1,36 @@
+{
+    "name": "com.rlabrecque.steamworks.net.editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:68bd7fdb68ef2684e982e8a9825b18a5"
+    ],
+    "includePlatforms": [
+        "Android",
+        "CloudRendering",
+        "Editor",
+        "GameCoreScarlett",
+        "GameCoreXboxOne",
+        "iOS",
+        "LinuxStandalone64",
+        "Lumin",
+        "macOSStandalone",
+        "PS4",
+        "PS5",
+        "Stadia",
+        "Switch",
+        "tvOS",
+        "WSA",
+        "WebGL",
+        "WindowsStandalone32",
+        "WindowsStandalone64",
+        "XboxOne"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -13,6 +13,9 @@ TagManager:
   - Av
   - base
   - Unit
+  - Aslan
+  - Dead
+  - Music
   layers:
   - Default
   - TransparentFX

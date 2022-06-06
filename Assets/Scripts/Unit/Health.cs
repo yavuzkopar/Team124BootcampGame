@@ -17,20 +17,17 @@ public class Health : MonoBehaviour,ISaveable
     {
         currentHealth = maxHealth;    
     }
-    void Things()
-        {
-            GameObject obj = Resources.Load<GameObject>(this.gameObject.name);
-        }
-
+   
     // Update is called once per frame
     void Update()
     {
         if (IsDead())
         {
             gameObject.layer = LayerMask.NameToLayer("DeadLayer");
-            GetComponent<Animator>().SetTrigger("die"); // die
+            gameObject.tag = "Dead";
+            if (!gameObject.CompareTag("Agac"))
+                GetComponent<Animator>().SetTrigger("die"); // die
             Economy.singleton.UpdatePopulation();
-            DestroyImmediate(gameObject);
             return;
         }
         canvas.transform.forward = Camera.main.transform.forward;
@@ -48,20 +45,26 @@ public class Health : MonoBehaviour,ISaveable
        // _animator.SetBool("attack",false);
         return currentHealth <= 0;
     }
+    public void Gerisay()
+    {
+        Invoke("Die", 2f);
+    }
+    void Die()
+    {
+        gameObject.SetActive(false);
+    }
    public Dictionary<string,object> data = new Dictionary<string, object>();
     public object CaptureState()
     {
         
-        data["Health"] = currentHealth;
-        data["instance"] = GetComponent<SaveableEntity>().GetUniqueIdentifier();
-        gameObject.name =(string) data["instance"];
-        return data;
+        
+        return currentHealth;
     }
 
     public void RestoreState(object state)
     {
-        Dictionary<string,object> dat = ( Dictionary<string,object>) state;
-        currentHealth = (float) dat["Health"];
+       
+        currentHealth = (float) state;
         
     }
 }
